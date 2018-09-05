@@ -3,12 +3,9 @@
  ⎕TRAP←(~stop_on_error)/⊂999 'C' '→r←0'
  Is←{
      Check←'MISMATCH'⎕SIGNAL 999/⍨⍵∘≢
-     ×⎕NC'⍺':Check(⍺⍺ Array 1).⎕NR ⍺
-     Check{⎕JSON⍣(326∊⎕DR¨∊⍵)⊢⍵}⍺⍺ Array 1
- }
- Array←{
-     aa←⍺⍺
-     (1≡⊃⍵,1)Deserialise 1↓∊(⎕UCS 13),¨'^ aa←{( |\R)*|( |\R)*}\R*$'⎕R''⍠'Mode' 'D'⎕NR'aa'
+     a←⍺⍺ Array 1
+     ×⎕NC'⍺':Check a.⎕NR ⍺
+     Check{⎕JSON⍣(326∊⎕DR¨∊⍵)⊢⍵}a
  }
 
  :Section vectors
