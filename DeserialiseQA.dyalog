@@ -1,4 +1,4 @@
-﻿ r←DeserialiseQA stop_on_error;⎕IO;Array;Is;⎕TRAP
+ r←DeserialiseQA stop_on_error;⎕IO;Is;⎕TRAP
  ⎕IO←0
  ⎕TRAP←(~stop_on_error)/⊂999 'C' '→r←0'
  Is←{
