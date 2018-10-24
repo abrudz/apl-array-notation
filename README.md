@@ -40,7 +40,7 @@ myns←∆NS ('name1' 'name2')(7 42)
 ### `∆NSinverse`
 
 Takes a ref or name of a namespace and returns a two-element vector of names and values.
-``
+```
 ∆NSinverse myns
 ∆NSinverse 'myns'
 ```
