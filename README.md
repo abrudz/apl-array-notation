@@ -16,7 +16,7 @@ Deserialise '(1 2 3',(⎕UCS 10),'4 5)'
 
 An optional left argument of 0 may be specified to return an APL expression which will generate the array rather than returning the array itself.
 
-### Serialise
+### `Serialise`
 
 This takes an array and returns a character vector of matrix representing the argument in array notation.
 
