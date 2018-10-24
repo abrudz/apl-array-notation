@@ -1,4 +1,4 @@
-# A model for a literal notation for most APL Array arrays
+# A model for a literal notation for most APL arrays
 
 ## How to use
 
