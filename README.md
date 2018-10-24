@@ -14,7 +14,7 @@ Deserialise '(a:{(+⌿⍵)÷≢⍵}' 'b:42)'
 Deserialise '(1 2 3',(⎕UCS 10),'4 5)'
 ```
 
-An optional left argument of 0 may be specified to return an APL expression which will generate the array rather than returning the array itself.
+An optional left argument of `0` may be specified to return an APL expression which will generate the array rather than returning the array itself.
 
 ### `Serialise`
 
@@ -26,7 +26,7 @@ Serialise ⎕fix ':namespace' 'a←{(+⌿⍵)÷≢⍵}' 'b←42' ':endnamespace'
 Serialise '(1 2 3)(4 5)'
 ```
 
-An optional left argumen of 1 may be specified to force return of a vector by using `⋄` to fuse lines.
+An optional left argumen of `1` may be specified to force return of a vector by using `⋄` to fuse lines.
 
 ### `∆NS`
 
@@ -44,3 +44,7 @@ Takes a ref or name of a namespace and returns a two-element vector of names and
 ∆NSinverse myns
 ∆NSinverse 'myns'
 ```
+
+### `Array`
+
+This allows using the notation inline, optionally over multiple lines, without having to quote everything. Instead, the notation is encapsulated in a dfn, which is used as operand for `Array` which in turn returns the corresponding array. A right argument must be supplied, and may be `⍬` or `1` returns the array, while `0` returns an expression for the array.
