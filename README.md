@@ -28,7 +28,7 @@ Serialise '(1 2 3)(4 5)'
 
 An optional left argumen of 1 may be specified to force return of a vector by using `⋄` to fuse lines.
 
-## `∆NS`
+### `∆NS`
 
 Extends `⎕NS` to allow a two-element right argument of names and values:
 
@@ -37,7 +37,7 @@ myns←∆NS ('name1' 'name2')(7 42)
 'myns'∆NS ('name3' 'name4')('apl' 'dyalog')
 ```
 
-## `∆NSinverse`
+### `∆NSinverse`
 
 Takes a ref or name of a namespace and returns a two-element vector of names and values.
 ``
