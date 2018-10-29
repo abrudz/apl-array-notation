@@ -10,20 +10,24 @@
      :CaseList 0 2  ⍝ char
          text←'''',array,''''
      :CaseList 6    ⍝ ref
-         text←'('
-         :For name :In array.⎕NL-⍳9
-             :Select array.⎕NC⊂name
-             :CaseList 2.1 2.2 2.3 2.6 ⍝ var
-                 text,←⊂⎕FMT(name,':')(Serialise array⍎name)
-             :CaseList 3.2 4.2 ⍝ dfn/dop
-                 text,←⊂↑('^( ',name,')←')⎕R'\1:'@1 array.⎕NR name
-             :CaseList 9+0.1×⍳9
-                 text,←⊂(name,':')(Serialise array⍎name)
-             :Else
-                 'Unsupported array'⎕SIGNAL 11
-             :EndSelect
-         :EndFor
-         text←⎕FMT⍪text,')'
+         :If ⎕NULL≡array
+             text←'⎕NULL'
+         :Else
+             text←'('
+             :For name :In array.⎕NL-⍳9
+                 :Select array.⎕NC⊂name
+                 :CaseList 2.1 2.2 2.3 2.6 ⍝ var
+                     text,←⊂⎕FMT(name,':')(Serialise array⍎name)
+                 :CaseList 3.2 4.2 ⍝ dfn/dop
+                     text,←⊂↑('^( ',name,')←')⎕R'\1:'@1 array.⎕NR name
+                 :CaseList 9+0.1×⍳9
+                     text,←⊂(name,':')(Serialise array⍎name)
+                 :Else
+                     'Unsupported array'⎕SIGNAL 11
+                 :EndSelect
+             :EndFor
+             text←⎕FMT⍪text,')'
+         :EndIf
      :Else ⍝ num
          text←⍕array
      :EndSelect
