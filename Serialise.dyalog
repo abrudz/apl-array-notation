@@ -41,10 +41,15 @@
  :ElseIf 1=≢⍴array ⍝ non-empty vec
      :If 326=⎕DR array ⍝ heterovec
          text←'('Encl⍪Dia∘Serialise¨array
-     :ElseIf 2|⎕DR array ⍝ charvec
-         text←⍕array
-     :Else ⍝ numvec
-         text←Quot array
+     :Else ⍝ simple vec
+         :If 2|⎕DR array ⍝ numvec
+             text←⍕array
+         :Else ⍝ charvec
+             text←Quot array
+         :EndIf
+         :If 1=≢array
+             text←'('text,'⋄)'
+         :EndIf
      :EndIf
      text←⎕FMT⍣(1≡≢array)⊢text
  :ElseIf 0∊¯1↓⍴array ⍝ early 0 length
@@ -57,7 +62,7 @@
      :CaseList 0 2 ⍝ charmat
          text←Quot SubMat array
      :Case 6  ⍝ heteromat
-         text←⎕FMT Dia∘Serialise¨array
+         text←⍪Dia∘Serialise¨↓array
      :Else ⍝ nummat
          :If ⍬≡array
          :ElseIf (1↑⍨-≢⍴array)≡0=⍴array

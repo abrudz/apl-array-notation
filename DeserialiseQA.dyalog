@@ -1,4 +1,4 @@
- r←DeserialiseQA stop_on_error;⎕IO;Is;⎕TRAP
+﻿ r←DeserialiseQA stop_on_error;⎕IO;Is;⎕TRAP
  ⎕IO←0
  ⎕TRAP←(~stop_on_error)/⊂999 'C' '→r←0'
  Is←{
@@ -8,7 +8,20 @@
      Check{⎕JSON⍣(326∊⎕DR¨∊⍵)⊢⍵}a
  }
 
+ :Section scalars
+     {
+         'a'
+     }Is'a'
+     {
+         42
+     }Is 42
+ :EndSection
  :Section vectors
+     {(42 ⋄ )}Is,42
+
+     {(42
+         )}Is,42
+
      {
          (1 2 3 'Hello' ⋄ 4 5 6 'World')
      }Is(1 2 3 'Hello')(4 5 6 'World')
@@ -28,13 +41,6 @@
          'Blind'
          'Mice')
      }Is'Three' 'Blind' 'Mice'
-
-     {(42 ⋄ )}Is,42
-
-     {(42
-         )}Is,42
-
-     {(42)}Is 42
  :EndSection
  :Section Matrices
      {
@@ -112,6 +118,10 @@
          e⍪←4 'RANK ERROR'
          e
      }⍬
+     {
+         ['a'(⊂1 2)'a'
+         (⊂1 2)'a'(⊂1 2)]
+     }Is 2 3⍴'a'(⊂1 2)
  :EndSection
 
  :Section High Rank
