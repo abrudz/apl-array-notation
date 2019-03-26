@@ -1,11 +1,11 @@
-﻿ r←DeserialiseQA stop_on_error;⎕IO;Is;⎕TRAP
+ r←DeserialiseQA stop_on_error;⎕IO;Is;⎕TRAP
  ⎕IO←0
  ⎕TRAP←(~stop_on_error)/⊂999 'C' '→r←0'
  Is←{
      Check←'MISMATCH'⎕SIGNAL 999/⍨⍵∘≢
      a←⍺⍺ Array 1
      ×⎕NC'⍺':Check a.⎕NR ⍺
-     Check{⎕JSON⍣(326∊⎕DR¨∊⍵)⊢⍵}a
+     Check{⎕JSON⍣(326∊⎕DR¨∊⍵)⊢⍵}⍣(⍵≢⎕NULL)⊢a
  }
 
  :Section scalars
@@ -15,12 +15,20 @@
      {
          42
      }Is 42
+     {
+         ⎕NULL
+     }Is ⎕NULL
+     {
+         ⎕UCS 0
+     }Is ⎕UCS 0
  :EndSection
  :Section vectors
      {(42 ⋄ )}Is,42
 
      {(42
          )}Is,42
+
+     {'Hello',⎕UCS⍳200}Is'Hello',⎕UCS⍳200
 
      {
          (1 2 3 'Hello' ⋄ 4 5 6 'World')
@@ -131,6 +139,36 @@
          [2 7 1
          2 8]]
      }Is 2 2 3⍴3 0 0 1 5 9 2 7 1 2 8 0
+ :EndSection
+
+ :Section Empty
+     {
+         ⍬
+     }Is ⍬
+     {
+         (⍬ ⋄ )
+     }Is,⊂⍬
+     {
+         0⍴⊂⍬
+     }Is 0⍴⊂⍬
+     {
+         0⍴⊂⊂⍬
+     }Is 0⍴⊂⊂⍬
+     {
+         0⍴⊂0⍴⊂⍬
+     }Is 0⍴⊂0⍴⊂⍬
+     {
+         [⍬ ⋄ ]
+     }Is⍉⍪⍬
+     {
+         ⍉[⍬ ⋄ ]
+     }Is⍪⍬
+     {
+         0⍴⊂[⍬ ⋄ ]
+     }Is 0⍴⊂⍉⍪⍬
+     {
+         0⍴⊂⍉[⍬ ⋄ ]
+     }Is 0⍴⊂⍪⍬
  :EndSection
 
  :Section Namespace

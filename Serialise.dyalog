@@ -1,6 +1,14 @@
-﻿ text←Serialise array;a;Quot;Brack;Encl;name;⎕IO;zero;trailshape;content;SubMat;Dia ⍝ Convert Array to text
+ text←Serialise array;a;Quot;Brack;Encl;name;⎕IO;zero;trailshape;content;SubMat;Dia;Esc;DblQuot;MkEsc;DelQQ ⍝ Convert Array to text
  ⎕IO←1
- Quot←('^|''' '$'⎕R'&'''⍕)⍤1
+ DblQuot←(,¨'^''$')⎕R'(''' '&&' ''')'⍠'Mode' 'D'⍕
+ MkEsc←{
+     stop←~⍵.Lengths[3]
+     nums←⍕⎕UCS ⍵.Match↓⍨-~stop
+     ''',',stop↓'(⎕UCS ',nums,stop↓'),''',⊃⌽⍵.Match
+ }
+ Esc←'([\x00-\x1F\x80-\xA0]+)(.?)'⎕R MkEsc⍠'Mode' 'D'
+ DelQQ←'^(\()'''',' ',''''(\))$'⎕R'\1'
+ Quot←DelQQ∘Esc∘DblQuot∘⍕⍤1
  Encl←{(l↑⍺⍺),(¯1⊖l↑w),')]'['(['⍳⍺⍺]↑⍨-l←2+≢w←⎕FMT ⍵}
  Brack←{(⎕FMT'['Encl⍤2)⍣⍺⍺⊢⍵}
  SubMat←{(¯2+≢⍴⍵)Brack ⍺⍺ ⍵}
@@ -8,7 +16,11 @@
  :If 0=≡array ⍝ simple scalar
      :Select 10|⎕DR array
      :CaseList 0 2  ⍝ char
-         text←'''',array,''''
+         :If (⎕UCS array)∊0,(⍳31),127+⍳33
+             text←1⌽')(⎕UCS ',⍕⎕UCS array
+         :Else
+             text←'''',array,''''
+         :EndIf
      :CaseList 6    ⍝ ref
          :If ⎕NULL≡array
              text←'⎕NULL'
@@ -40,7 +52,7 @@
      :Case ''
          text←''''''
      :Else
-         text←(⍕⍴array),'⍴⊂',Serialise⊃array
+         text←(⍕⍴array),'⍴⊂',Dia Serialise⊃array
      :EndSelect
  :ElseIf 1=≢⍴array ⍝ non-empty vec
      :If 326=⎕DR array ⍝ heterovec
@@ -59,7 +71,7 @@
  :ElseIf 0∊¯1↓⍴array ⍝ early 0 length
      zero←¯1+0⍳⍨⍴array
      trailshape←zero↓⍴array
-     content←(⍕trailshape),'⍴⊂',Serialise⊃array
+     content←(⍕trailshape),'⍴⊂',Dia Serialise⊃array
      text←zero Brack(1,⍨zero↑⍴array)⍴⊂content
  :Else ⍝ high-rank
      :Select 10|⎕DR array
