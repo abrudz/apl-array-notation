@@ -47,7 +47,7 @@
      Namespace←{
          p←(0=⍺)×SepMask ⍵
          (names assns)←↓⍉↑⍺ ParseLine EachNonempty Over(p Split)⍵
-         ∊'({'(assns,¨'⋄')'⎕NS,¨'(' '''∘,¨names,¨'''')'}⍬)'
+         ∊'({'(assns,¨'⋄')'⎕NS,¨⊆'(' '''∘,¨names,¨'''')'}⍬)'
      }
 
      w←↓⍣(2=≢⍴⍵)⊢⍵                ⍝ mat?

@@ -48,3 +48,49 @@ Takes a ref or name of a namespace and returns a two-element vector of names and
 ### `Array`
 
 This allows using the notation inline, optionally over multiple lines, without having to quote everything. Instead, the notation is encapsulated in a dfn, which is used as operand for `Array` which in turn returns the corresponding array. A right argument must be supplied, and may be `⍬` or `1` returns the array, while `0` returns an expression for the array.
+
+## Domain and Limitations
+
+### Valid Content
+
+The models handle arrays consisting of numbers, characters, namespaces, one-liner dfns/dops, and such arrays. Note that namespaces lose their scripts and names when serialised, just like when converted to JSON using `⎕JSON`. Classes, Instances, Interfaces, and namespaces are not supported. Namespaces with circular references will cause `Serialise` to recurse until `WS FULL`.
+
+### Functions and Operators
+
+`Serialise` does handle multi-line dfns/dops, but `Deserialise` is not able to parse them. Tradfns/tradops and derived functions/operators (including primitives and trains) are not supported.
+
+### Code Layout
+
+`Serialise` generates indented notation using line breaks, but will fall back to using diamonds for the inner parts of certain nested arrays. It will often generate superfluous parentheses and diamonds.
+
+### Scoping and Order of Evaluation
+
+The official proposal for the below notation includes specification of exact scope in phrases, including order of evaluation. The models do not attempt to address this other than encapsulating namespace members such that names created as side effects avoid polluting their surroundings. This also means that a namespace cannot contain a member with a name identical to itself.
+
+## Notation
+
+The notation extends strand notation as follows:
+
+### Round Parentheses
+
+A diamond (`⋄`) inside a parenthesis causes the parenthesis to represent a vector where each diamond-delimited phrase represents an element. E.g. `(1 2 ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)`
+
+### Square Brackets
+
+A diamond (`⋄`) inside a bracket causes the bracket to represent an array where each diamond-delimited phrase represents a major cell. E.g. `[1 2 3 ⋄ 4 5 6]` is equivalent to `2 3⍴1 2 3,4 5 6`
+
+If a major cell is scalar, it will be interpreted as a 1-element vector. E.g. `[1 ⋄ 2]` is equivalent to `⍪1 2`
+
+If major cells have differing shapes, they will be extended in the manner of Mix (`↑`). E.g. `[1 2 ⋄ 3 4 5]` is equivalent to `2 3⍴1 2 0,3 4 5`
+
+### Diamonds, Whitespace, Line Breaks
+
+At least one diamond is required to indicate array notation as opposed to traditional parenthesisation or bracketing. E.g. `(1)` is equivalent to `1` and `'abcdef'[[1 2 3 ⋄ 4 5 6]]` is equivalent to `'abcdef'[2 3⍴1 2 3,4 5 6]`
+
+All-whitespace phrases are ignored. E.g. `(1 2 ⋄ ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)` while `(1 2 ⋄ )` is equivalent to `,⊂1 2` and `(1 ⋄ )` is equivalent to `,1`
+
+Any diamond may be exchanged with a line break. E.g. `(1 2`   
+`3 4 5)`  is equivalent to `(1 2 ⋄ 3 4 5)`
+
+
+
