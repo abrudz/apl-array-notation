@@ -73,23 +73,30 @@ The notation extends strand notation as follows:
 
 ### Round Parentheses
 
-A diamond (`⋄`) inside a parenthesis causes the parenthesis to represent a vector where each diamond-delimited phrase represents an element. E.g. `(1 2 ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)`
+A diamond (`⋄`) inside a parenthesis causes the parenthesis to represent a vector where each diamond-delimited phrase represents an element.  
+ E.g. `(1 2 ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)`
 
 ### Square Brackets
 
-A diamond (`⋄`) inside a bracket causes the bracket to represent an array where each diamond-delimited phrase represents a major cell. E.g. `[1 2 3 ⋄ 4 5 6]` is equivalent to `2 3⍴1 2 3,4 5 6`
+A diamond (`⋄`) inside a bracket causes the bracket to represent an array where each diamond-delimited phrase represents a major cell.  
+ E.g. `[1 2 3 ⋄ 4 5 6]` is equivalent to `2 3⍴1 2 3,4 5 6`
 
-If a major cell is scalar, it will be interpreted as a 1-element vector. E.g. `[1 ⋄ 2]` is equivalent to `⍪1 2`
+If a major cell is scalar, it will be interpreted as a 1-element vector.  
+ E.g. `[1 ⋄ 2]` is equivalent to `⍪1 2`
 
-If major cells have differing shapes, they will be extended in the manner of Mix (`↑`). E.g. `[1 2 ⋄ 3 4 5]` is equivalent to `2 3⍴1 2 0,3 4 5`
+If major cells have differing shapes, they will be extended in the manner of Mix (`↑`).  
+ E.g. `[1 2 ⋄ 3 4 5]` is equivalent to `2 3⍴1 2 0,3 4 5`
 
 ### Diamonds, Whitespace, Line Breaks
 
-At least one diamond is required to indicate array notation as opposed to traditional parenthesisation or bracketing. E.g. `(1)` is equivalent to `1` and `'abcdef'[[1 2 3 ⋄ 4 5 6]]` is equivalent to `'abcdef'[2 3⍴1 2 3,4 5 6]`
+At least one diamond is required to indicate array notation as opposed to traditional parenthesisation or bracketing.  
+ E.g. `(1)` is equivalent to `1` and `'abcdef'[[1 2 3 ⋄ 4 5 6]]` is equivalent to `'abcdef'[2 3⍴1 2 3,4 5 6]`
 
-All-whitespace phrases are ignored. E.g. `(1 2 ⋄ ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)` while `(1 2 ⋄ )` is equivalent to `,⊂1 2` and `(1 ⋄ )` is equivalent to `,1`
+All-whitespace phrases are ignored.  
+ E.g. `(1 2 ⋄ ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)` while `(1 2 ⋄ )` is equivalent to `,⊂1 2` and `(1 ⋄ )` is equivalent to `,1`
 
-Any diamond may be exchanged with a line break. E.g. `(1 2`   
+Any diamond may be exchanged with a line break.  
+ E.g. `(1 2`   
 `3 4 5)`  is equivalent to `(1 2 ⋄ 3 4 5)`
 
 
