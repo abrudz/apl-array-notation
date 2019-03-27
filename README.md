@@ -53,7 +53,7 @@ This allows using the notation inline, optionally over multiple lines, without h
 
 ### Valid Content
 
-The models handle arrays consisting of numbers, characters, namespaces, one-liner dfns/dops, and such arrays. Note that namespaces lose their scripts and names when serialised, just like when converted to JSON using `⎕JSON`. Classes, Instances, Interfaces, and namespaces are not supported. Namespaces with circular references will cause `Serialise` to recurse until `WS FULL`.
+The models handle arrays consisting of numbers, characters, namespaces, one-liner dfns/dops, and such arrays. Note that namespaces lose their scripts, names, and system variables when serialised, just like when converted to JSON using `⎕JSON`. Classes, Instances, Interfaces, and namespaces are not supported. Namespaces with circular references will cause `Serialise` to recurse until `WS FULL`.
 
 ### Functions and Operators
 
@@ -67,6 +67,10 @@ The models handle arrays consisting of numbers, characters, namespaces, one-line
 
 The official proposal for the below notation includes specification of exact scope in phrases, including order of evaluation. The models do not attempt to address this other than encapsulating namespace members such that names created as side effects avoid polluting their surroundings. This also means that a namespace cannot contain a member with a name identical to itself.
 
+### System Variables
+
+`Deserialise` does not accept invalid APL names as members of namespaces. This includes otherwise valid system names like `⎕IO` and `⎕ML`.
+
 ## Notation
 
 The notation extends strand notation as follows:
@@ -74,7 +78,13 @@ The notation extends strand notation as follows:
 ### Round Parentheses
 
 A diamond (`⋄`) inside a parenthesis causes the parenthesis to represent a vector where each diamond-delimited phrase represents an element.  
- E.g. `(1 2 ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)`
+ `(1 2 ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)`
+ 
+A colon (`:`) inside a parenthesis causes the parenthesis to represent a namespace where each diamond-delimited phrase represents a name:value pair.  
+ `(ans:42)` is equivalent to `⎕JSON'{"ans":42}'` (except for the display form)
+
+`()` represents a new empty namespace.  
+ `()` is equivalent to `⎕NS⍬`
 
 ### Square Brackets
 
@@ -94,7 +104,7 @@ At least one diamond is required to indicate array notation as opposed to tradit
  `'abcdef'[[1 2 3 ⋄ 4 5 6]]` is equivalent to `'abcdef'[2 3⍴1 2 3,4 5 6]`
 
 All-whitespace phrases are ignored.  
- `(1 2 ⋄ ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)`
+ `(1 2 ⋄ ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)`  
  `(1 2 ⋄ )` is equivalent to `,⊂1 2`  
  `(1 ⋄ )` is equivalent to `,1`
 
