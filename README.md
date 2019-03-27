@@ -83,7 +83,7 @@ A diamond (`⋄`) inside a parenthesis causes the parenthesis to represent a vec
 A colon (`:`) inside a parenthesis causes the parenthesis to represent a namespace where each diamond-delimited phrase represents a name:value pair.  
  `(ans:42)` is equivalent to `⎕JSON'{"ans":42}'` (except for the display form)
 
-`()` represents a new empty namespace.  
+An empty parenthesis (`()`) represents a new empty namespace.  
  `()` is equivalent to `⎕NS⍬`
 
 ### Square Brackets
