@@ -1,6 +1,7 @@
- text←Serialise array;a;Quot;Brack;Encl;name;⎕IO;zero;trailshape;content;SubMat;Dia;Esc;DblQuot;MkEsc;DelQQ ⍝ Convert Array to text
+ text←Serialise array;a;Quot;Brack;Encl;name;⎕IO;zero;trailshape;content;SubMat;Dia;Esc;DblQuot;MkEsc;DelQQ;q ⍝ Convert Array to text
  ⎕IO←1
- DblQuot←(,¨'^''$')⎕R'(''' '&&' ''')'⍠'Mode' 'D'⍕
+ q←''''
+ DblQuot←{'('q,(q ⎕R'&&'⍕⍵),q')'}
  MkEsc←{
      stop←~⍵.Lengths[3]
      nums←⍕⎕UCS ⍵.Match↓⍨-~stop
@@ -19,7 +20,7 @@
          :If (⎕UCS array)∊0,(⍳31),127+⍳33
              text←1⌽')(⎕UCS ',⍕⎕UCS array
          :Else
-             text←'''',array,''''
+             text←q,array,q
          :EndIf
      :CaseList 6    ⍝ ref
          :If ⎕NULL≡array
@@ -50,7 +51,7 @@
      :Case ⍬
          text←'⍬'
      :Case ''
-         text←''''''
+         text←q q
      :Else
          text←(⍕⍴array),'⍴⊂',Dia Serialise⊃array
      :EndSelect

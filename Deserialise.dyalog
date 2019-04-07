@@ -1,9 +1,10 @@
 ﻿ Deserialise←{ ⍝ Convert text to array
      ⍺←1 ⍝ 1=execute expression; 0=return expression
+     q←''''
      ⎕IO←0
      SEP←'⋄',⎕UCS 10 13
 
-     Unquot←{(⍺⍺ ⍵)×~≠\''''=⍵}
+     Unquot←{(⍺⍺ ⍵)×~≠\q=⍵}
      SepMask←∊∘SEP Unquot
      ParenLev←+\(×¯3+7|¯3+'([{)]}'∘⍳)Unquot
 
@@ -31,7 +32,7 @@
          ('})]'⍳⊃⌽⍵)≠('{(['⍳⊃⍵):'Bad bracketing'⎕SIGNAL 2
          (a w)←(1↓¯1∘↓)¨(⍺-1)⍵
          '['=⊃⍵:Paren'↑1/¨',Paren ErrIfEmpty a Parse w ⍝ high-rank
-         ':'∊(1=⍺)/⍵:a Namespace w ⍝ ns
+         ':'∊⍵/⍨(1=⍺)×~≠\q=⍵:a Namespace w ⍝ ns
          '('=⊃⍵:Paren{⍵,'⎕NS⍬'/⍨0=≢⍵}a Parse w ⍝ vector/empty ns
          ⍵ ⍝ dfn
      }
@@ -47,7 +48,7 @@
      Namespace←{
          p←(0=⍺)×SepMask ⍵
          (names assns)←↓⍉↑⍺ ParseLine EachNonempty Over(p Split)⍵
-         ∊'({'(assns,¨'⋄')'⎕NS,¨⊆'(' '''∘,¨names,¨'''')'}⍬)'
+         ∊'({'(assns,¨'⋄')'⎕NS,¨⊆'(' 'q∘,¨names,¨q)'}⍬)'
      }
 
      w←↓⍣(2=≢⍴⍵)⊢⍵                ⍝ mat?
