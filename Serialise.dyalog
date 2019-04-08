@@ -1,4 +1,4 @@
- text←Serialise array;a;Quot;Brack;Encl;name;⎕IO;zero;trailshape;content;SubMat;Dia;Esc;DblQuot;MkEsc;DelQQ;q ⍝ Convert Array to text
+ text←Serialise array;a;Quot;Brack;Encl;name;⎕IO;zero;trailshape;content;SubMat;Dia;Esc;DblQuot;MkEsc;DelQQ;q;drs;items ⍝ Convert Array to text
  ⎕IO←1
  q←''''
  DblQuot←{'('q,(q ⎕R'&&'⍕⍵),q')'}
@@ -74,6 +74,22 @@
      trailshape←zero↓⍴array
      content←(⍕trailshape),'⍴⊂',Dia Serialise⊃array
      text←zero Brack(1,⍨zero↑⍴array)⍴⊂content
+⍝ Special-case "tables"
+ :ElseIf 2=≢⍴array ⍝ matrix
+ :AndIf 2≤≢array   ⍝ 2-row
+ :AndIf ~326∊drs←⎕DR¨array  ⍝ simple, non-ref'y items
+ :AndIf ∧/,1≥≢∘⍴¨array ⍝ scal/vec items
+ :AndIf ~∨/(∊~2|drs)∊⎕UCS 127 133 0,⍳31 ⍝ ctrl chars
+     items←{
+         ⍬≡⍵:'⍬'
+         r←⍕⍵
+         r{⍵:⍺ ⋄ 1⌽q q,''''⎕R'&&'⊢⍺}←⍬≡0⍴⍵  ⍝ quote?
+         r,←'⋄'/⍨1∊⍴⍵                       ⍝ 1-element vec
+         r{⍵:1⌽')(',⍺ ⋄ ⍺}←(1∊⍴⍵)∨(⍬≡⍴⍵)<⍬≡0⍴⍵ ⍝ parens?
+         r
+     }¨array
+     text←⍕items
+     text←'[]'@(1 1)(⍴text)⊢text
  :Else ⍝ high-rank
      :Select 10|⎕DR array
      :CaseList 0 2 ⍝ charmat
