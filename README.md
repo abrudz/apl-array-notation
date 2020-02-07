@@ -26,7 +26,7 @@ Serialise ⎕fix ':namespace' 'a←{(+⌿⍵)÷≢⍵}' 'b←42' ':endnamespace'
 Serialise '(1 2 3)(4 5)'
 ```
 
-An optional left argumen of `1` may be specified to force return of a vector by using `⋄` to fuse lines.
+An optional left argument of `1` may be specified to force return of a vector by using `⋄` to fuse lines.
 
 ### `∆NS`
 
@@ -79,7 +79,7 @@ The notation extends strand notation as follows:
 
 A diamond (`⋄`) inside a parenthesis causes the parenthesis to represent a vector where each diamond-delimited phrase represents an element.  
  `(1 2 ⋄ 3 4 5)` is equivalent to `(1 2)(3 4 5)`
- 
+
 A colon (`:`) inside a parenthesis causes the parenthesis to represent a namespace where each diamond-delimited phrase represents a name:value pair.  
  `(ans:42)` is equivalent to `⎕JSON'{"ans":42}'` (except for the display form)
 
